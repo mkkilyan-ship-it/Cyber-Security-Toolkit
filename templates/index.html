@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cyber Security Toolkit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">&#128272;</span>
+      <span class="brand-name">Cyber Security Toolkit</span>
+    </div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="password">Mots de passe</button>
+      <button class="tab-btn" data-tab="scanner">Scanner de ports</button>
+      <button class="tab-btn" data-tab="crypto">Chiffrement</button>
+      <button class="tab-btn" data-tab="integrity">Intégrité</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="disclaimer">
+      &#9888;&#65039; Outils réservés à l'apprentissage et aux tests sur des systèmes que vous possédez
+      ou pour lesquels vous disposez d'une autorisation explicite.
+    </div>
+
+    <section id="password" class="panel active">
+      <h2>Générateur de mot de passe</h2>
+      <form id="password-form" class="card">
+        <label>Longueur : <span id="length-value">16</span>
+          <input type="range" id="pw-length" min="4" max="64" value="16">
+        </label>
+        <div class="checkbox-grid">
+          <label><input type="checkbox" id="pw-upper" checked> Majuscules (A-Z)</label>
+          <label><input type="checkbox" id="pw-lower" checked> Minuscules (a-z)</label>
+          <label><input type="checkbox" id="pw-digits" checked> Chiffres (0-9)</label>
+          <label><input type="checkbox" id="pw-symbols" checked> Symboles (!@#$...)</label>
+          <label><input type="checkbox" id="pw-ambiguous"> Exclure caractères ambigus (I,l,1,O,0)</label>
+        </div>
+        <button type="submit" class="btn-primary">Générer</button>
+      </form>
+      <div class="card result-card" id="password-result" hidden>
+        <code id="password-output"></code>
+        <button id="copy-password" class="btn-secondary" type="button">Copier</button>
+        <div class="strength-bar"><div id="strength-fill" class="strength-fill"></div></div>
+        <span id="strength-label"></span>
+      </div>
+    </section>
+
+    <section id="scanner" class="panel">
+      <h2>Scanner de ports TCP</h2>
+      <form id="scanner-form" class="card">
+        <label>Hôte / IP
+          <input type="text" id="scan-host" placeholder="127.0.0.1" required>
+        </label>
+        <div class="row">
+          <label>Port de début
+            <input type="number" id="scan-start" min="1" max="65535" value="1" required>
+          </label>
+          <label>Port de fin
+            <input type="number" id="scan-end" min="1" max="65535" value="1024" required>
+          </label>
+        </div>
+        <button type="submit" class="btn-primary">Lancer l'analyse</button>
+      </form>
+      <div class="card" id="scanner-result" hidden>
+        <p id="scanner-summary"></p>
+        <table id="scanner-table">
+          <thead><tr><th>Port</th><th>Service</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="crypto" class="panel">
+      <h2>Chiffrement / déchiffrement de fichiers</h2>
+      <div class="crypto-grid">
+        <form id="encrypt-form" class="card" enctype="multipart/form-data">
+          <h3>Chiffrer</h3>
+          <label>Fichier <input type="file" id="encrypt-file" required></label>
+          <label>Mot de passe <input type="password" id="encrypt-password" required></label>
+          <button type="submit" class="btn-primary">Chiffrer &amp; télécharger</button>
+        </form>
+        <form id="decrypt-form" class="card" enctype="multipart/form-data">
+          <h3>Déchiffrer</h3>
+          <label>Fichier (.enc) <input type="file" id="decrypt-file" required></label>
+          <label>Mot de passe <input type="password" id="decrypt-password" required></label>
+          <button type="submit" class="btn-primary">Déchiffrer &amp; télécharger</button>
+        </form>
+      </div>
+      <p id="crypto-status" class="status"></p>
+    </section>
+
+    <section id="integrity" class="panel">
+      <h2>Vérification d'intégrité</h2>
+      <div class="crypto-grid">
+        <form id="hash-form" class="card" enctype="multipart/form-data">
+          <h3>Calculer les empreintes</h3>
+          <label>Fichier <input type="file" id="hash-file" required></label>
+          <button type="submit" class="btn-primary">Calculer</button>
+        </form>
+        <form id="verify-form" class="card" enctype="multipart/form-data">
+          <h3>Comparer à une empreinte</h3>
+          <label>Fichier <input type="file" id="verify-file" required></label>
+          <label>Empreinte attendue <input type="text" id="verify-hash" placeholder="md5 / sha1 / sha256 / sha512" required></label>
+          <button type="submit" class="btn-primary">Vérifier</button>
+        </form>
+      </div>
+      <div class="card" id="hash-result" hidden>
+        <ul id="hash-list"></ul>
+      </div>
+      <p id="verify-status" class="status"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Cyber Security Toolkit &mdash; à des fins éducatives et de tests autorisés uniquement.
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/password.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/crypto.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/integrity.js') }}"></script>
+</body>
+</html>
